@@ -1,0 +1,6 @@
+/.vscode/
+/scripts/
+/api/credentials.py
+/api/nope.txt
+/api/__pycache__
+/api/schedule.json
