@@ -2,13 +2,20 @@
 
 $primaryDark: #000000;
 $primaryColor: #4878f1;
+$primaryLight: #ffffff;
+$primaryGrey: #e5e5e5;
 @import "header";
 @import "selector";
+@import "roomlist";
 
 body,
 html,
 #root {
   height: 100%;
+}
+
+#root {
+  margin: 0px 5%;
 }
 
 * {

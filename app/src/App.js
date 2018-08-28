@@ -3,9 +3,10 @@ import "./App.css";
 import ZoneSelector from "./components/ZoneSelector";
 import Header from "./components/Header";
 import axios from "axios";
+import RoomList from "./components/RoomList";
 
 const dev = true;
-const settingsPath = dev ? "http://localhost:8081/settings.json" : "";
+const settingsPath = dev ? "http://localhost:8081/schedule.json" : "";
 
 class App extends Component {
   constructor(props) {
@@ -34,12 +35,14 @@ class App extends Component {
           }}
         />
       );
+
     return (
       <main>
         <Header
           name={this.state.data.zones[this.state.zoneSelected].name}
           resetZone={() => this.setState({ zoneSelected: undefined })}
         />
+        <RoomList rooms={data.zones[zoneSelected].rooms} />
       </main>
     );
   }
