@@ -1,9 +1,12 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,400");
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,200,300,400");
 
 $primaryDark: #000000;
 $primaryColor: #4878f1;
+$secondaryColor: #38a3ff;
 $primaryLight: #ffffff;
 $primaryGrey: #e5e5e5;
+$event: #adff95;
+$secondaryEvent: #79ff77;
 @import "header";
 @import "selector";
 @import "roomlist";

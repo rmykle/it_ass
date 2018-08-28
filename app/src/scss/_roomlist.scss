@@ -8,7 +8,7 @@ section {
     border: 1px solid $primaryGrey;
     margin-bottom: 20px;
     h5 {
-      background-color: $primaryColor;
+      background: linear-gradient($primaryColor, $secondaryColor);
       color: $primaryLight;
       font-weight: 400;
       padding: 20px 10px;
@@ -16,15 +16,28 @@ section {
     }
     ul {
       list-style: none;
+      position: relative;
       li {
-        height: 7px;
+        height: 7 * 4px;
       }
     }
-    li:nth-child(8n),
-    li:nth-child(8n-1),
-    li:nth-child(8n-2),
-    li:nth-child(8n-3) {
+    li:nth-child(even):not(.event) {
       background-color: $primaryGrey;
+    }
+    .event {
+      position: absolute;
+      overflow: hidden;
+      width: 100%;
+      background: linear-gradient($event, $secondaryEvent);
+      font-weight: 200;
+      display: flex;
+      flex-direction: column;
+      p {
+        text-align: center;
+        span {
+          font-weight: 300;
+        }
+      }
     }
   }
 }
