@@ -1,0 +1,20 @@
+.selector {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  list-style: none;
+}
+
+li {
+  color: $primaryDark;
+  text-decoration: none;
+  font-weight: 100;
+  font-size: 3rem;
+  margin: 20px 0px;
+  letter-spacing: 0.5rem;
+}
+li:hover {
+  color: $primaryColor;
+}

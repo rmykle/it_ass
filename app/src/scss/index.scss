@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,400");
+
+$primaryDark: #000000;
+$primaryColor: #4878f1;
+@import "header";
+@import "selector";
+
+body,
+html,
+#root {
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
