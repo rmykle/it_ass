@@ -1,13 +1,16 @@
+$roomWidth: 18%;
+
 section {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 
-  > div {
-    width: 18%;
+  > div:not(.filler) {
+    width: $roomWidth;
     border: 1px solid $primaryGrey;
     margin-bottom: 40px;
     overflow: hidden;
+    box-shadow: -4px -4px 1px #d2d2d2;
     h5 {
       background: linear-gradient($primaryLight);
       color: $primaryDark;
@@ -47,7 +50,10 @@ section {
       z-index: 50;
       height: 0px;
       width: 100%;
-      border-bottom: 3px solid green;
+      border-bottom: 3px solid $darkGreen;
     }
+  }
+  .filler {
+    width: $roomWidth;
   }
 }
