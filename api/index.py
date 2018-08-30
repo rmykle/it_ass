@@ -2,6 +2,7 @@ from flask import Flask
 import json
 from credentials import uib_key
 import urllib.request as request
+from datetime import date
 
 
 app = Flask(__name__)
@@ -12,16 +13,19 @@ root_api_url = "https://tp.data.uib.no/KEYe3axy9a4a/ws/1.4"
 room_event_url = root_api_url + \
     "/room.php?id={}&fromdate={}&todate={}&lang=no"
 
+current_date = date.today().strftime("%Y-%m-%d")
+
 
 @app.route("/")
 def hello():
-
+    print(current_date)
     config = read_config()
     zones = config["zones"]
     for zone in zones.values():
         for room in zone["rooms"]:
             fetch_room_events(room)
     save_schedule(config)
+
     return "complete"
 
 
@@ -31,7 +35,7 @@ def read_config():
 
 
 def fetch_room_events(room):
-    event_url = room_event_url.format(room["id"], "2018-08-28", "2018-08-28")
+    event_url = room_event_url.format(room["id"], current_date, current_date)
     data = json.loads(request.urlopen(event_url).read())
     room_events = []
     for event in data["events"]:

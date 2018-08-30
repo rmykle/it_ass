@@ -1,23 +1,13 @@
 import React from "react";
+import TimeBar from "./TimeBar";
 
-export default ({ room }) => {
-  const baseDate = new Date();
-  baseDate.setHours(8);
-  baseDate.setMinutes(0);
-
+export default ({ room, baseDate, currentDate }) => {
   const hours = [];
   for (let i = 0; i < 10; i++) {
     hours.push(<li key={i} />);
   }
 
-  const events = room.events.map(event => {
-    return Object.assign(event, {
-      dtstart: new Date(event.dtstart.substring(0, event.dtstart.length - 3)),
-      dtend: new Date(event.dtend.substring(0, event.dtend.length - 3))
-    });
-  });
-
-  const eventElements = events.map((event, index) => {
+  const eventElements = room.events.map((event, index) => {
     return (
       <li
         key={index}
@@ -45,6 +35,7 @@ export default ({ room }) => {
       <ul>
         {hours}
         {eventElements}
+        <TimeBar timeElapsed={timeToPixels(baseDate, currentDate)} />
       </ul>
     </div>
   );
@@ -59,8 +50,7 @@ const timeToPixels = (d1, d2) => {
 };
 
 const getTimeString = date => {
-  console.log(date.getHours());
   return `${date.getHours()}:${
-    date.getMinutes() == 0 ? "00" : date.getMinutes()
+    date.getMinutes() === 0 ? "00" : date.getMinutes()
   }`;
 };
