@@ -44,7 +44,8 @@ class App extends Component {
     });
     this.clockInterval = setInterval(() => {
       this.setState({ currentDate: new Date() });
-    });
+      console.log("tick");
+    }, 60 * 1000);
   }
 
   render() {
