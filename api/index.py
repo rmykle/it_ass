@@ -2,15 +2,17 @@ from flask import Flask, jsonify
 import json
 from credentials import uib_key
 import urllib.request as request
-from datetime import date
+from datetime import date, datetime
 from icalendar import Calendar, Event
 from flask_cors import CORS
+from os import path
 
 
 app = Flask(__name__)
 CORS(app)
 
 config_path = "settings.json"
+schedule_path = "schedule.json"
 
 root_api_url = "https://tp.data.uib.no/KEYe3axy9a4a/ws/1.4"
 room_event_url = root_api_url + \
@@ -48,15 +50,30 @@ def dispute():
 
 @app.route("/read")
 def hello():
-    print(current_date)
-    config = read_config()
-    zones = config["zones"]
-    for zone in zones.values():
-        for room in zone["rooms"]:
-            fetch_room_events(room)
-    save_schedule(config)
 
-    return "complete"
+    return jsonify(read_schedule())
+    # config = read_config()
+    # zones = config["zones"]
+    # config["timestamp"] = str(current_date)
+    # for zone in zones.values():
+    # for room in zone["rooms"]:
+    # fetch_room_events(room)
+    # break
+    # save_schedule(config)
+
+    # return jsonify(config)
+
+
+def read_schedule():
+    if not path.exists(schedule_path):
+        return None
+    with open(schedule_path, "r") as inputfile:
+        data = json.load(inputfile)
+        file_stamp = datetime.strptime(data["timestamp"], "%Y-%m-%d")
+        if file_stamp.date() == current_date:
+            return data
+        else:
+            return None
 
 
 def read_config():
@@ -77,5 +94,5 @@ def fetch_room_events(room):
 
 
 def save_schedule(data):
-    with open('schedule.json', 'w') as outfile:
+    with open(schedule_path, 'w') as outfile:
         json.dump(data, outfile)
