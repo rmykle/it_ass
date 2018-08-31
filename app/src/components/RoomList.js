@@ -10,7 +10,7 @@ export default ({ rooms, baseDate, currentDate }) => {
   }
 
   return (
-    <section>
+    <section className="rooms">
       {filteredRooms.map(room => {
         return (
           <Room

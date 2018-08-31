@@ -1,12 +1,14 @@
-from flask import Flask
+from flask import Flask, jsonify
 import json
 from credentials import uib_key
 import urllib.request as request
 from datetime import date
 from icalendar import Calendar, Event
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 
 config_path = "settings.json"
 
@@ -24,15 +26,24 @@ def index():
     return "Hei"
 
 
-@app.route("/disp/")
+@app.route("/disputas/")
 def dispute():
     response = request.urlopen(calender_events).read()
     cal = Calendar.from_ical(response)
+    events = []
     for element in cal.walk("vevent"):
-        print(element.get("dtstart").dt.date())
-        print(current_date == element.get("dtstart").dt.date())
+        if "LOCATION" in element:
+            print(element["LOCATION"])
+        if current_date == element.get("dtstart").dt.date():
+            events.append({
+                "dtstart": element["DTSTART"].dt.isoformat(),
+                "dtend": element["DTEND"].dt.isoformat(),
+                "summary": element["SUMMARY"],
+                "description": element["DESCRIPTION"],
+                "location": element["LOCATION"] if "LOCATION" in element else None
+            })
 
-    return str(cal)
+    return jsonify(events)
 
 
 @app.route("/read")

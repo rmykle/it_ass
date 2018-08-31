@@ -4,8 +4,10 @@ import ZoneSelector from "./components/ZoneSelector";
 import Header from "./components/Header";
 import axios from "axios";
 import RoomList from "./components/RoomList";
+import Disputas from "./components/Disputas";
 
 const dev = true;
+const apiUrl = dev ? "http://localhost:5000/" : "";
 const settingsPath = dev ? "http://localhost:8081/schedule.json" : "";
 
 class App extends Component {
@@ -18,30 +20,14 @@ class App extends Component {
       zoneSelected: undefined,
       data: undefined,
       baseDate: baseDate,
-      currentDate: new Date()
+      currentDate: new Date(),
+      disputas: []
     };
   }
 
   componentDidMount() {
-    axios.get(settingsPath).then(({ data }) => {
-      const { zones } = data;
-      for (let zoneKey in zones) {
-        const zone = zones[zoneKey];
-        for (let roomKey in zone.rooms) {
-          const room = zone.rooms[roomKey];
-          const formattedEvents = room.events.map(event => {
-            return Object.assign(event, {
-              dtstart: new Date(
-                event.dtstart.substring(0, event.dtstart.length - 3)
-              ),
-              dtend: new Date(event.dtend.substring(0, event.dtend.length - 3))
-            });
-          });
-          room.events = formattedEvents;
-        }
-      }
-      this.setState({ data: data });
-    });
+    this.fetchSchedule();
+    this.fetchDisputas();
     this.clockInterval = setInterval(() => {
       this.setState({ currentDate: new Date() });
       console.log("tick");
@@ -71,6 +57,7 @@ class App extends Component {
           name={this.state.data.zones[this.state.zoneSelected].name}
           resetZone={() => this.setState({ zoneSelected: undefined })}
         />
+        <Disputas events={this.state.disputas} />
         <RoomList
           rooms={data.zones[zoneSelected].rooms}
           baseDate={this.state.baseDate}
@@ -78,6 +65,38 @@ class App extends Component {
         />
       </main>
     );
+  }
+  fetchSchedule() {
+    axios.get(settingsPath).then(({ data }) => {
+      const { zones } = data;
+      for (let zoneKey in zones) {
+        const zone = zones[zoneKey];
+        for (let roomKey in zone.rooms) {
+          const room = zone.rooms[roomKey];
+          const formattedEvents = room.events.map(event => {
+            return Object.assign(event, {
+              dtstart: new Date(
+                event.dtstart.substring(0, event.dtstart.length - 3)
+              ),
+              dtend: new Date(event.dtend.substring(0, event.dtend.length - 3))
+            });
+          });
+          room.events = formattedEvents;
+        }
+      }
+      this.setState({ data: data });
+    });
+  }
+
+  fetchDisputas() {
+    axios
+      .get(apiUrl + "disputas")
+      .then(({ data }) => {
+        this.setState({ disputas: data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 }
 
