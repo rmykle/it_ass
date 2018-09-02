@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import "./App.css";
+import "./scss/index.scss";
 import ZoneSelector from "./components/ZoneSelector";
 import Header from "./components/Header";
 import axios from "axios";
 import RoomList from "./components/RoomList";
 import Disputas from "./components/Disputas";
+import Loading from "./components/Loading";
 
 const dev = true;
 const apiUrl = dev ? "http://localhost:5000/" : "";
-const settingsPath = dev ? "http://localhost:8081/schedule.json" : "";
+const schedulePath = dev ? apiUrl + "schedule" : "";
 
 class App extends Component {
   constructor(props) {
@@ -30,13 +31,12 @@ class App extends Component {
     this.fetchDisputas();
     this.clockInterval = setInterval(() => {
       this.setState({ currentDate: new Date() });
-      console.log("tick");
     }, 60 * 1000);
   }
 
   render() {
     const { data, zoneSelected } = this.state;
-    if (!data) return <div>Loading</div>;
+    if (!data) return <Loading />;
     if (!zoneSelected)
       return (
         <ZoneSelector
@@ -67,25 +67,30 @@ class App extends Component {
     );
   }
   fetchSchedule() {
-    axios.get(settingsPath).then(({ data }) => {
-      const { zones } = data;
-      for (let zoneKey in zones) {
-        const zone = zones[zoneKey];
-        for (let roomKey in zone.rooms) {
-          const room = zone.rooms[roomKey];
-          const formattedEvents = room.events.map(event => {
-            return Object.assign(event, {
-              dtstart: new Date(
-                event.dtstart.substring(0, event.dtstart.length - 3)
-              ),
-              dtend: new Date(event.dtend.substring(0, event.dtend.length - 3))
+    axios
+      .get(schedulePath)
+      .then(({ data }) => {
+        const { zones } = data;
+        for (let zoneKey in zones) {
+          const zone = zones[zoneKey];
+          for (let roomKey in zone.rooms) {
+            const room = zone.rooms[roomKey];
+            const formattedEvents = room.events.map(event => {
+              return Object.assign(event, {
+                dtstart: new Date(
+                  event.dtstart.substring(0, event.dtstart.length - 3)
+                ),
+                dtend: new Date(
+                  event.dtend.substring(0, event.dtend.length - 3)
+                )
+              });
             });
-          });
-          room.events = formattedEvents;
+            room.events = formattedEvents;
+          }
         }
-      }
-      this.setState({ data: data });
-    });
+        this.setState({ data: data });
+      })
+      .catch(error => console.log(error));
   }
 
   fetchDisputas() {

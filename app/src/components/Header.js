@@ -4,7 +4,10 @@ export default ({ resetZone, name, currentDate }) => {
   return (
     <header>
       <div>
-        <h3 onClick={() => resetZone()}>&lt; Tilbake</h3>
+        <div className="back" onClick={() => resetZone()}>
+          <i class="material-icons">keyboard_arrow_left</i>
+          <h3>Tilbake</h3>
+        </div>
         <h1>{name}</h1>
         <h5>
           {currentDate.toLocaleTimeString([], {
@@ -16,6 +19,7 @@ export default ({ resetZone, name, currentDate }) => {
           })}
         </h5>
       </div>
+
       <div className="line" />
     </header>
   );

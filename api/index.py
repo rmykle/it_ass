@@ -13,8 +13,9 @@ CORS(app)
 
 config_path = "settings.json"
 schedule_path = "schedule.json"
+log_path = "log.txt"
 
-root_api_url = "https://tp.data.uib.no/KEYe3axy9a4a/ws/1.4"
+root_api_url = "https://tp.data.uib.no/{}/ws/1.4".format(uib_key)
 room_event_url = root_api_url + \
     "/room.php?id={}&fromdate={}&todate={}&lang=no"
 
@@ -25,7 +26,11 @@ current_date = date.today()
 
 @app.route("/")
 def index():
-    return "Hei"
+    with open(log_path, "a+") as log_file:
+        log_file.write(current_date.strftime(
+            "%Y-%m-%d") + "\n")
+
+    return ""
 
 
 @app.route("/disputas/")
@@ -34,34 +39,34 @@ def dispute():
     cal = Calendar.from_ical(response)
     events = []
     for element in cal.walk("vevent"):
-        if "LOCATION" in element:
-            print(element["LOCATION"])
         if current_date == element.get("dtstart").dt.date():
             events.append({
                 "dtstart": element["DTSTART"].dt.isoformat(),
                 "dtend": element["DTEND"].dt.isoformat(),
-                "summary": element["SUMMARY"],
-                "description": element["DESCRIPTION"],
+                "summary": element["SUMMARY"] if "SUMMARY" in element else None,
                 "location": element["LOCATION"] if "LOCATION" in element else None
             })
 
     return jsonify(events)
 
 
-@app.route("/read")
+@app.route("/schedule/")
 def hello():
 
-    return jsonify(read_schedule())
-    # config = read_config()
-    # zones = config["zones"]
-    # config["timestamp"] = str(current_date)
-    # for zone in zones.values():
-    # for room in zone["rooms"]:
-    # fetch_room_events(room)
-    # break
-    # save_schedule(config)
+    stored = read_schedule()
+    if stored:
+        return jsonify(stored)
 
-    # return jsonify(config)
+    config = read_config()
+    zones = config["zones"]
+    config["timestamp"] = str(current_date)
+    for zone in zones.values():
+        for room in zone["rooms"]:
+            fetch_room_events(room)
+
+    save_schedule(config)
+
+    return jsonify(config)
 
 
 def read_schedule():

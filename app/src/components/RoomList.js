@@ -3,6 +3,13 @@ import Room from "./Room";
 
 export default ({ rooms, baseDate, currentDate }) => {
   const filteredRooms = rooms.filter(room => showRoom(room, currentDate));
+  if (filteredRooms.length === 0) {
+    return (
+      <section className="noRooms">
+        <h1>Ingen gjenværende undervisning i dag</h1>
+      </section>
+    );
+  }
   const fillers = [];
   const fillerCount = (filteredRooms.length + 1) % 5;
   for (let i = 0; i < fillerCount; i++) {

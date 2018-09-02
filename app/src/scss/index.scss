@@ -10,10 +10,12 @@ $darkGreen: green;
 @import "selector";
 @import "roomlist";
 @import "disputas";
+@import "loading";
 
 body,
 html,
-#root {
+#root,
+main {
   height: 100%;
 }
 
