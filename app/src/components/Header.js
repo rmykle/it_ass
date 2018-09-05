@@ -5,7 +5,7 @@ export default ({ resetZone, name, currentDate }) => {
     <header>
       <div>
         <div className="back" onClick={() => resetZone()}>
-          <i class="material-icons">keyboard_arrow_left</i>
+          <i className="material-icons">keyboard_arrow_left</i>
           <h3>Tilbake</h3>
         </div>
         <h1>{name}</h1>

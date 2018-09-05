@@ -4,12 +4,14 @@ from credentials import uib_key
 import urllib.request as request
 from datetime import date, datetime
 from icalendar import Calendar, Event
-from flask_cors import CORS
 from os import path
+import sys
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 CORS(app)
+application = app
 
 config_path = "settings.json"
 schedule_path = "schedule.json"
@@ -26,11 +28,13 @@ current_date = date.today()
 
 @app.route("/")
 def index():
-    with open(log_path, "a+") as log_file:
-        log_file.write(current_date.strftime(
-            "%Y-%m-%d") + "\n")
+    return sys.version
 
-    return ""
+
+@app.route("/test/")
+def test():
+    print("hei")
+    return "test ok"
 
 
 @app.route("/disputas/")
@@ -65,6 +69,7 @@ def hello():
             fetch_room_events(room)
 
     save_schedule(config)
+    log()
 
     return jsonify(config)
 
@@ -101,3 +106,9 @@ def fetch_room_events(room):
 def save_schedule(data):
     with open(schedule_path, 'w') as outfile:
         json.dump(data, outfile)
+
+
+def log():
+    with open(log_path, "a+") as log_file:
+        log_file.write(current_date.strftime(
+            "%Y-%m-%d") + "\n")

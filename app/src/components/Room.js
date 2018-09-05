@@ -4,7 +4,7 @@ import TimeBar from "./TimeBar";
 export default ({ room, baseDate, currentDate }) => {
   const hours = [];
   for (let i = 0; i < 10; i++) {
-    hours.push(<li key={i} />);
+    hours.push(<li key={i}>{`${i + 8}:00-${i + 9}:00`}</li>);
   }
 
   const eventElements = room.events.map((event, index) => {
@@ -13,7 +13,7 @@ export default ({ room, baseDate, currentDate }) => {
         key={index}
         style={{
           top: timeToPixels(event.dtstart, baseDate),
-          height: timeToPixels(event.dtstart, event.dtend)
+          height: timeToPixels(event.dtend, event.dtstart)
         }}
         className="event"
         title={`${getTimeString(event.dtstart)} - ${getTimeString(
@@ -35,16 +35,14 @@ export default ({ room, baseDate, currentDate }) => {
       <ul>
         {hours}
         {eventElements}
-        <TimeBar timeElapsed={timeToPixels(baseDate, currentDate)} />
+        <TimeBar timeElapsed={timeToPixels(currentDate, baseDate)} />
       </ul>
     </div>
   );
 };
 
 const timeToPixels = (d1, d2) => {
-  const minutes = Math.abs(
-    Math.floor((d2.getTime() - d1.getTime()) / 1000 / 60)
-  );
+  const minutes = Math.floor((d1.getTime() - d2.getTime()) / 1000 / 60);
   const pixels = Math.floor((minutes / 60) * 28);
   return pixels;
 };

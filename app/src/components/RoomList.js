@@ -18,7 +18,7 @@ export default ({ rooms, baseDate, currentDate }) => {
 
   return (
     <section className="rooms">
-      {filteredRooms.map(room => {
+      {filteredRooms.sort((r1, r2) => r2.size - r1.size).map(room => {
         return (
           <Room
             key={room.id}

@@ -8,9 +8,8 @@ import Disputas from "./components/Disputas";
 import Loading from "./components/Loading";
 
 const dev = true;
-const apiUrl = dev ? "http://localhost:5000/" : "";
-const schedulePath = dev ? apiUrl + "schedule" : "";
-
+const apiUrl = dev ? "http://localhost:5000/" : "api/";
+const schedulePath = apiUrl + "schedule";
 class App extends Component {
   constructor(props) {
     super(props);
