@@ -7,7 +7,7 @@ import RoomList from "./components/RoomList";
 import Disputas from "./components/Disputas";
 import Loading from "./components/Loading";
 
-const dev = true;
+const dev = false;
 const apiUrl = dev ? "http://localhost:5000/" : "api/";
 const schedulePath = apiUrl + "schedule";
 class App extends Component {
