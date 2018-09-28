@@ -28,7 +28,7 @@ $roomWidth: 18%;
         height: 7 * 4px;
         justify-content: center;
         font-weight: 100;
-        font-size: 8px;
+        font-size: 10px;
       }
     }
     li:nth-child(even):not(.event):not(.timeBar) {
@@ -43,6 +43,7 @@ $roomWidth: 18%;
       display: flex;
       flex-direction: column;
       padding-top: 5px;
+
       p {
         text-align: center;
         span {

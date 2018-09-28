@@ -6,6 +6,7 @@ import axios from "axios";
 import RoomList from "./components/RoomList";
 import Disputas from "./components/Disputas";
 import Loading from "./components/Loading";
+import Weather from "./containers/Weather";
 
 const dev = false;
 const apiUrl = dev ? "http://localhost:5000/" : "api/";
@@ -56,7 +57,11 @@ class App extends Component {
           name={this.state.data.zones[this.state.zoneSelected].name}
           resetZone={() => this.setState({ zoneSelected: undefined })}
         />
-        <Disputas events={this.state.disputas} />
+        <div className="topRow">
+          <Disputas events={this.state.disputas} />
+          <Weather rootApi={apiUrl} />
+        </div>
+
         <RoomList
           rooms={data.zones[zoneSelected].rooms}
           baseDate={this.state.baseDate}

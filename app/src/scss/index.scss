@@ -11,6 +11,7 @@ $darkGreen: green;
 @import "roomlist";
 @import "disputas";
 @import "loading";
+@import "weather";
 
 body,
 html,
@@ -27,4 +28,9 @@ main {
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
+}
+
+.topRow {
+  display: flex;
+  flex-direction: row;
 }

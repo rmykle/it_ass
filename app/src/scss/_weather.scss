@@ -1,0 +1,73 @@
+.weather {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  .status {
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    border: 1px solid $darkGreen;
+    margin: 15px 0px;
+    overflow: hidden;
+  }
+
+  .isFocusedOnComplete {
+    background-color: $event;
+  }
+  .noWeatherData {
+    border: 1px solid $darkGreen;
+    background-color: $event;
+  }
+
+  .hasWeatherData {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: white;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    > div:first-child {
+      z-index: 2;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      h4,
+      h5 {
+        font-weight: 300;
+      }
+    }
+    .rainBg {
+      width: 100%;
+      position: absolute;
+      background-color: #bce0ff;
+      bottom: 0;
+    }
+
+    .hasWeatherData:hover {
+      content: "TEST";
+    }
+  }
+  p {
+    display: flex;
+    flex-direction: column;
+    font-weight: 100;
+    align-items: center;
+  }
+
+  $a-tags: "a, a:active, a:hover, a:visited";
+  #{$a-tags} {
+    color: $darkGreen;
+    text-decoration: none;
+  }
+}

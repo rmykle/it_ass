@@ -7,6 +7,7 @@ from icalendar import Calendar, Event
 from os import path
 from flask_cors import CORS
 import sys
+import pandas
 
 
 app = Flask(__name__)
@@ -22,8 +23,8 @@ room_event_url = root_api_url + \
 
 calender_events = "http://www.uib.no/nb/node/52181/eventlist.ics?event_types[]=disputation&event_types[]=trial_lecture"
 
-current_date = date.today()
-current_day_path = "schedules/" + current_date.strftime("%Y-%m-%d") + ".json"
+current_date = date.today().strftime("%Y-%m-%d")
+current_day_path = "schedules/" + current_date + ".json"
 
 print(current_day_path)
 
@@ -66,7 +67,7 @@ def dispute():
     cal = Calendar.from_ical(response)
     events = []
     for element in cal.walk("vevent"):
-        if current_date == element.get("dtstart").dt.date():
+        if date.today() == element.get("dtstart").dt.date():
             events.append({
                 "dtstart": element["DTSTART"].dt.isoformat(),
                 "dtend": element["DTEND"].dt.isoformat(),
@@ -75,6 +76,21 @@ def dispute():
             })
 
     return json.dumps(events)
+
+
+@app.route("/rain/")
+def is_it_raining():
+    station_id = 29
+    current_date = date.today().strftime("%Y-%m-%d")
+
+    url = "https://www.bergensveret.no/ws/download?fromDate={}&toDate={}&action=period_query&s={}&params%5b%5d=RR_010&format=csv&downloadData=S%C3%B8k".format(
+        current_date, current_date, station_id)
+    print(url)
+
+    dataframe = pandas.read_csv(url, sep="\t").reset_index()
+    dataframe.columns = ["date", "time", "mm"]
+    last_entry = dataframe.tail(1).iloc[0]
+    return json.dumps(last_entry.to_dict())
 
 
 def read_file(file_path):
@@ -95,8 +111,7 @@ def read_config():
 
 
 def fetch_room_events(room):
-    event_url = room_event_url.format(room["id"], current_date.strftime(
-        "%Y-%m-%d"), current_date.strftime("%Y-%m-%d"))
+    event_url = room_event_url.format(room["id"], current_date, current_date)
     data = json.loads(request.urlopen(event_url).read())
     room_events = []
     for event in data["events"]:
@@ -113,8 +128,7 @@ def save_schedule(data):
 
 def log():
     with open(log_path, "a+") as log_file:
-        log_file.write(current_date.strftime(
-            "%Y-%m-%d") + "\n")
+        log_file.write(current_date + "\n")
 
 
 if __name__ == "__main__":
