@@ -11,8 +11,10 @@ import pandas
 
 
 app = Flask(__name__)
+app.debug = True
 CORS(app)
 application = app
+
 
 config_path = "settings.json"
 log_path = "log.txt"
@@ -38,13 +40,15 @@ def index():
 def hello():
 
     stored = read_schedule()
+
     if stored:
-        return json.dumps(stored)
+        return json.dumps(stored, ensure_ascii=False).encode()
 
     config = read_file(config_path)
 
     zones = config["zones"]
     config["timestamp"] = str(current_date)
+
     for zone in zones.values():
         for room in zone["rooms"]:
             fetch_room_events(room)
@@ -55,10 +59,9 @@ def hello():
     return json.dumps(config, ensure_ascii=False).encode()
 
 
-@app.route("/test/")
-def test():
-    print("hei")
-    return "test ok"
+@app.route("/config/")
+def config():
+    return json.dumps(read_file(config_path))
 
 
 @app.route("/disputas/")
@@ -132,4 +135,4 @@ def log():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
