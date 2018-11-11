@@ -22,7 +22,8 @@ class App extends Component {
       data: undefined,
       baseDate: baseDate,
       currentDate: new Date(),
-      disputas: []
+      disputas: [],
+      error: ""
     };
   }
 
@@ -35,6 +36,7 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.error) return <h1 className="error">{this.state.error}</h1>;
     const { data, zoneSelected } = this.state;
     if (!data) return <Loading />;
     if (!zoneSelected)
@@ -94,7 +96,11 @@ class App extends Component {
         }
         this.setState({ data: data });
       })
-      .catch(error => console.log(error));
+      .catch(error =>
+        this.setState({
+          error: "Ugler i mosen a gitt - Klarte ikke hente data"
+        })
+      );
   }
 
   fetchDisputas() {

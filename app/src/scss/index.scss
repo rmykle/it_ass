@@ -34,3 +34,10 @@ main {
   display: flex;
   flex-direction: row;
 }
+
+.error {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
