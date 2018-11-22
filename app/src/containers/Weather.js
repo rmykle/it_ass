@@ -46,7 +46,7 @@ export default class Weather extends Component {
   }
 
   fetchWeatherData() {
-    const apiUrl = this.props.rootApi + "rain";
+    const apiUrl = this.props.rootApi + "rain/";
     axios
       .get(apiUrl)
       .then(({ data }) => {
@@ -62,7 +62,7 @@ export default class Weather extends Component {
     const rainValue = Math.ceil(mm * 20);
     return (
       <div className="hasWeatherData">
-        {rainValue === 0 ? (
+        {rainValue === 0 || isNaN(mm) ? (
           "Nei"
         ) : (
           <div>

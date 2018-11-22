@@ -88,7 +88,6 @@ def is_it_raining():
 
     url = "https://www.bergensveret.no/ws/download?fromDate={}&toDate={}&action=period_query&s={}&params%5b%5d=RR_010&format=csv&downloadData=S%C3%B8k".format(
         current_date, current_date, station_id)
-    print(url)
 
     dataframe = pandas.read_csv(url, sep="\t").reset_index()
     dataframe.columns = ["date", "time", "mm"]

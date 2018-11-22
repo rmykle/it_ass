@@ -10,7 +10,7 @@ import Weather from "./containers/Weather";
 
 const dev = false;
 const apiUrl = dev ? "http://localhost:5000/" : "api/";
-const schedulePath = apiUrl + "schedule";
+const schedulePath = apiUrl + "schedule/";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -105,7 +105,7 @@ class App extends Component {
 
   fetchDisputas() {
     axios
-      .get(apiUrl + "disputas")
+      .get(apiUrl + "disputas/")
       .then(({ data }) => {
         this.setState({ disputas: data });
       })
