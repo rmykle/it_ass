@@ -6,10 +6,8 @@ import axios from "axios";
 import RoomList from "./components/RoomList";
 import Disputas from "./components/Disputas";
 import Loading from "./components/Loading";
-import Weather from "./containers/Weather";
 
-const dev = false;
-const apiUrl = dev ? "http://localhost:5000/" : "api/";
+const apiUrl = "https://it.myklevoll.com/api/";
 const schedulePath = apiUrl + "schedule/";
 class App extends Component {
   constructor(props) {
@@ -61,7 +59,6 @@ class App extends Component {
         />
         <div className="topRow">
           <Disputas events={this.state.disputas} />
-          <Weather rootApi={apiUrl} />
         </div>
 
         <RoomList

@@ -13,7 +13,6 @@ export default ({ zones, onZoneSelect }) => {
             }}
           >
             {key}
-            <i className="material-icons">send</i>
           </li>
         );
       })}

@@ -1,0 +1,36 @@
+@media (max-width: 400px) {
+  .selector {
+    li {
+      font-size: 24px;
+      font-weight: normal;
+    }
+  }
+
+  header {
+    > div {
+      .back {
+        font-size: 10px;
+        padding: 5px;
+      }
+      h1 {
+        font-size: 25px;
+        letter-spacing: 0;
+        flex: 1;
+        text-align: right;
+      }
+      h5 {
+        font-size: 22px;
+        width: 100%;
+        text-align: right;
+      }
+    }
+  }
+
+  .rooms {
+    flex-direction: column;
+    align-items: center;
+    > div:not(.filler) {
+      width: 80%;
+    }
+  }
+}
