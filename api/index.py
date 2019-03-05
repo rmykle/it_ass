@@ -7,7 +7,6 @@ from icalendar import Calendar, Event
 from os import path
 from flask_cors import CORS
 import sys
-import pandas
 
 
 app = Flask(__name__)
@@ -79,20 +78,6 @@ def dispute():
             })
 
     return json.dumps(events)
-
-
-@app.route("/rain/")
-def is_it_raining():
-    station_id = 29
-    current_date = date.today().strftime("%Y-%m-%d")
-
-    url = "https://www.bergensveret.no/ws/download?fromDate={}&toDate={}&action=period_query&s={}&params%5b%5d=RR_010&format=csv&downloadData=S%C3%B8k".format(
-        current_date, current_date, station_id)
-
-    dataframe = pandas.read_csv(url, sep="\t").reset_index()
-    dataframe.columns = ["date", "time", "mm"]
-    last_entry = dataframe.tail(1).iloc[0]
-    return json.dumps(last_entry.to_dict())
 
 
 def read_file(file_path):
